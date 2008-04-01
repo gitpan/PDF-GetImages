@@ -6,11 +6,11 @@ require Exporter;
 use vars qw(@EXPORT_OK @ISA);
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(pdfimages);
-our $VERSION = sprintf "%d.%02d", q$Revision: 1.1.1.1 $ =~ /(\d+)/g;
-
+our $VERSION = sprintf "%d.%02d", q$Revision: 1.7 $ =~ /(\d+)/g;
 
 $PDF::GetImages::FORCE_JPG=0;
 $PDF::GetImages::DEBUG =0;
+
 sub DEBUG : lvalue { $PDF::GetImages::DEBUG }
 
 sub debug {
