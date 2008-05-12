@@ -1,3 +1,7 @@
+use lib inc; #__assertexe__#
+use Devel::AssertEXE qw(convert pdfimages xpdf); #__assertexe__#
+use Devel::AssertOS qw(Unix);
+
 use ExtUtils::MakeMaker;
 WriteMakefile(
     NAME              => 'PDF::GetImages',

@@ -3,35 +3,24 @@ use strict;
 use File::Which 'which';
 use Carp;
 require Exporter;
-use vars qw(@EXPORT_OK @ISA);
+use vars qw(@EXPORT_OK @ISA $WHICH_CONVERT $WHICH_PDFIMAGES $VERSION $DEBUG);
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(pdfimages);
-our $VERSION = sprintf "%d.%02d", q$Revision: 1.7 $ =~ /(\d+)/g;
+$VERSION = sprintf "%d.%02d", q$Revision: 1.10 $ =~ /(\d+)/g;
 
 $PDF::GetImages::FORCE_JPG=0;
-$PDF::GetImages::DEBUG =0;
 
-sub DEBUG : lvalue { $PDF::GetImages::DEBUG }
+$WHICH_CONVERT = which('convert');
+$WHICH_PDFIMAGES = which('pdfimages')
+   or croak( " is pdfimages (xpdf) installed? Cant get which() pdfimages");
+
 
 sub debug {
    my $m = shift; 
    $m||=''; 
-   DEBUG or return 1; 
+   $DEBUG or return 1; 
    print STDERR " # PDF::GetImages # $m\n"; 
    return 1; 
-}
-
-sub _pdfimages_bin {
-   
-   unless( defined $PDF::GetImages::_pdfimages_bin ){
-      require File::Which;
-
-	   $PDF::GetImages::_pdfimages_bin = File::Which::which('pdfimages') 
-         or croak( "pdfimages() will not work, is pdfimages (xpdf) installed?"
-            ."Cant get which() pdfimages");
-   }
-   
-   return $PDF::GetImages::_pdfimages_bin;
 }
 
 
@@ -53,10 +42,6 @@ sub pdfimages {
 
    my ($abs_loc,$filename,$filename_only) = ($1,"$2$3",$2);
    
-   
-
-   my $bin = _pdfimages_bin();
-
    my $_copied=0;
    if( $_dir_out ){
       my $dir_out = Cwd::abs_path($_dir_out) or croak("cant resolve $_dir_out");
@@ -72,8 +57,6 @@ sub pdfimages {
          $abs_pdf = "$dir_out/$filename";
          debug("switched to use pdf copy $abs_pdf");
       }
-
-
    }
 
 	
@@ -82,7 +65,7 @@ sub pdfimages {
       or carp("pdfimages() cannot chdir into $abs_loc.") 
       and return [];	
 
-   my @args=($bin, $abs_pdf,$filename_only);
+   my @args=($WHICH_PDFIMAGES, $abs_pdf,$filename_only);
    debug("args [@args]");   
 	system(@args) == 0
 		or croak("system [@args] bad.. $?");	
@@ -125,12 +108,10 @@ sub _convert_to_jpg {
    $_out=~s/\.\w{1,5}$/\.jpg/ 
       or warn("cant match etx on $_abs") and return;
    require File::Which;
-   my $convbin = File::Which::which('convert');
-   system($convbin,$_abs,$_out) ==0 or  die($?);
+   system($WHICH_CONVERT, $_abs, $_out) ==0 or  die($?);
    unlink $_abs;
    debug(" converted to $_out");
    return $_out;
-
 }
 
 
@@ -157,7 +138,7 @@ This code makes use of pdfimages which is part
 of xpdf. 
 In case CAM::PDF scripts don't work for you, you may want to try using 
 this to extract images from PDF documents.
-
+See L<DEPENDENCIES AND REQUIREMENTS>
 
 =head1 pdfimages()
 
@@ -175,7 +156,6 @@ are extracted, warns and returns empty array ref []
 
 =head1 FORCE_JPG
 
-
 By default pdfimages will spit out pbm or ppm image format files which are huge and unruly.
 If you want to make sure the images output are jpg..
 
@@ -183,13 +163,19 @@ If you want to make sure the images output are jpg..
 
 You must have imagemagick convert installed for this to work.
 
+=head1 DEPENDENCIES AND REQUIREMENTS
+
+This module requires Unix family operating system to be installed. 
+You must have xpdf package and Image Magick convert installed.
+Presently we are using cli pdfgetimages. You must have xpdf installed on your system.
+
 =head1 AUTHOR
 
 Leo Charre leocharre at cpan dot org
 
 =head1 COPYRIGHT
 
-Copyright (c) 2007 Leo Charre. All rights reserved.
+Copyright (c) 2008 Leo Charre. All rights reserved.
 
 =head1 LICENSE
 
@@ -203,6 +189,8 @@ See the "GNU General Public License" for more details.
 
 =head1 SEE ALSO
 
-CAM::PDF
+http://www.imagemagick.org/, 
+xpdf, 
+L<CAM::PDF>
 
 =cut
