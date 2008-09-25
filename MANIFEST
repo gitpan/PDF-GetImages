@@ -1,12 +1,14 @@
-inc/Devel/AssertEXE.pm #__assertexe__#
-t/01_PDF_GetImages.t
-t/09_cleanup.t
-t/scan1.pdf
-lib/PDF/GetImages.pm
+Changes
 MANIFEST
 Makefile.PL
-
-inc/Devel/CheckOS.pm
+inc/Devel/AssertEXE.pm
 inc/Devel/AssertOS.pm
 inc/Devel/AssertOS/Unix.pm
+inc/Devel/CheckOS.pm
+lib/PDF/GetImages.pm
+t/01_PDF_GetImages.t
+t/02_do_testdocs.t
+t/99_cleanup.t
+t/scan1.pdf
+t/testdocs/spherion.pdf
 META.yml                                 Module meta-data (added by MakeMaker)

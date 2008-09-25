@@ -3,17 +3,20 @@ use strict;
 use File::Which 'which';
 use Carp;
 require Exporter;
-use vars qw(@EXPORT_OK @ISA $WHICH_CONVERT $WHICH_PDFIMAGES $VERSION $DEBUG);
+use vars qw(@EXPORT_OK @ISA $WHICH_CONVERT $WHICH_PDFIMAGES $VERSION $DEBUG $errstr);
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(pdfimages);
-$VERSION = sprintf "%d.%02d", q$Revision: 1.10 $ =~ /(\d+)/g;
-
+$VERSION = sprintf "%d.%02d", q$Revision: 1.13 $ =~ /(\d+)/g;
 $PDF::GetImages::FORCE_JPG=0;
 
 $WHICH_CONVERT = which('convert');
 $WHICH_PDFIMAGES = which('pdfimages')
    or croak( " is pdfimages (xpdf) installed? Cant get which() pdfimages");
 
+sub errstr {
+   $errstr = $_[0] if defined $_[0];
+   return $errstr;
+}
 
 sub debug {
    my $m = shift; 
@@ -36,9 +39,11 @@ sub pdfimages {
    
    -f $abs_pdf or carp("$abs_pdf not on disk.") and return [];
 
+
    $abs_pdf=~/(.+)\/([^\/]+)(\.pdf)$/i
       or carp("$abs_pdf not '.pdf'?")
       and return [];
+
 
    my ($abs_loc,$filename,$filename_only) = ($1,"$2$3",$2);
    
@@ -166,8 +171,9 @@ You must have imagemagick convert installed for this to work.
 =head1 DEPENDENCIES AND REQUIREMENTS
 
 This module requires Unix family operating system to be installed. 
-You must have xpdf package and Image Magick convert installed.
-Presently we are using cli pdfgetimages. You must have xpdf installed on your system.
+You must have 'xpdf' package and 'ImageMagick' convert installed.
+Presently we are using cli 'pdfgetimages'. 
+You must have xpdf installed on your system.
 
 =head1 AUTHOR
 

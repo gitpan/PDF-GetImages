@@ -1,19 +1,23 @@
-use lib inc; #__assertexe__#
-use Devel::AssertEXE qw(convert pdfimages xpdf); #__assertexe__#
-use Devel::AssertOS qw(Unix);
-
 use ExtUtils::MakeMaker;
+
 WriteMakefile(
-    NAME              => 'PDF::GetImages',
-    VERSION_FROM      => 'lib/PDF/GetImages.pm', # finds $VERSION
-    PREREQ_PM         => {
-                'File::Path' => 0,
-					 'File::Copy' => 0,
-					 'File::Which' => 0,
-					 'Carp' => 0,
+   NAME => 'PDF::GetImages',
+   VERSION_FROM => 'lib/PDF/GetImages.pm',
 
-		          'Image::Magick' => 0,		
 
-					 },
-   # EXE_FILES               => [qw(bin/pdf2ocr bin/ocr bin/pdfgetext bin/pdf2ocrturntotext)],
+   # gen /usr/bin/pmused by Thu Sep 25 16:39:49 EDT 2008 
+   PREREQ_PM => {
+      'Carp'                              => '1.03',
+      'File::Copy'                        => '2.08',
+      'File::Find::Rule'                  => '0.30',
+      'File::Path'                        => '2.04',
+      'File::Spec'                        => '3.17',
+      'File::Which'                       => '0.05',
+      'Test::Simple'                      => '0.8',
+   },
+
+
+   EXE_FILES => [],
 );
+
+
