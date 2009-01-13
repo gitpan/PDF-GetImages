@@ -1,3 +1,7 @@
+use lib './inc';
+use Devel::AssertOS qw/Unix/;
+use Devel::AssertEXE qw/pdfimages/;
+
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
