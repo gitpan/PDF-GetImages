@@ -7,7 +7,7 @@ use Cwd;
 use vars qw(@EXPORT_OK @ISA $WHICH_CONVERT $WHICH_PDFIMAGES $VERSION $DEBUG $errstr $FORCE_JPG @TRASH);
 @ISA = qw(Exporter);
 @EXPORT_OK = qw(pdfimages);
-$VERSION = sprintf "%d.%02d", q$Revision: 1.17 $ =~ /(\d+)/g;
+$VERSION = sprintf "%d.%02d", q$Revision: 1.18 $ =~ /(\d+)/g;
 $FORCE_JPG=0;
 $WHICH_CONVERT ||= which('convert');
 $WHICH_PDFIMAGES ||= which('pdfimages')

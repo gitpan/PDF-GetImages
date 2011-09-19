@@ -72,7 +72,7 @@ Leo Charre leocharre at cpan dot org
 
 =head1 COPYRIGHT
 
-Copyright (c) 2008 Leo Charre. All rights reserved.
+Copyright (c) 2011 Leo Charre. All rights reserved.
 
 =head1 LICENSE
 
